@@ -5,6 +5,18 @@ namespace App\Http\Controllers\Maker;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+// Datatables
+use App\DataTables\FileLayoutDataTable;
+
+// models
+use App\Models\User;
+
+// Request
+use App\Http\Requests\FileStoreRequest;
+
+// Repositories
+use App\Repositories\FileLayoutRepository;
+
 class FileController extends Controller
 {
     /**
@@ -12,9 +24,17 @@ class FileController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    private $process;
+
+    public function __construct(FileLayoutRepository $process){
+        $this->process = $process;
+    }
+
     public function index()
     {
-        return view('file-layout.index');
+        $user = User::all();
+        return view('file-layout.index', compact('user'));
     }
 
     /**
@@ -24,7 +44,7 @@ class FileController extends Controller
      */
     public function create()
     {
-        //
+        return view('file-layout.create');
     }
 
     /**
@@ -33,9 +53,12 @@ class FileController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(FileStoreRequest $request)
     {
-        //
+        $attributes = $request->only('Filename');
+        $this->process->storing($attributes);
+
+        return redirect()->back()->with('stored', 'New Layout Saved');
     }
 
     /**

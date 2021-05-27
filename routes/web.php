@@ -19,5 +19,9 @@ use App\Http\Controllers\Maker\FileController;
 Auth::routes(['register' => false]);
 Route::prefix('Maker')->middleware('auth')->group(function(){
     Route::get('/home', [HomeController::class, 'index'])->name('home');
+
     Route::get('/select-file', [FileController::class, 'index'])->name('select-file');
+    Route::get('/add-file', [FileController::class, 'create'])->name('add-file');
+    Route::post('/store-file', [FileController::class, 'store'])->name('store-file');
+
 });

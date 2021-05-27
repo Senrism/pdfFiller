@@ -9,15 +9,14 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
+    @stack('before_app')
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @stack('after_app')
 </head>
 <body>
     <div id="app">
@@ -80,4 +79,27 @@
         </main>
     </div>
 </body>
+
+@stack('before_js')
+<!-- Scripts -->
+{{-- first solution --}}
+{{-- <script src="{{ asset('js/app.js') }}" defer></script> --}}
+{{-- <script>
+    window.addEventListener('load', function() {
+        $(document).ready(function(){
+            $('.datatable').DataTable();
+        })
+        // console.log($);
+    });
+</script> --}}
+
+{{-- second solution without defer--}}
+<script src="{{ asset('js/app.js') }}"></script>
+<script>
+    $(document).ready(function(){
+            $('.datatable').DataTable();
+        })
+</script>
+
+@stack('after_js')
 </html>
